@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flux架构</title>
+</head>
+<body>
+Flux将一个应用分成四个部分。
+<ul>
+    <li>View： 视图层</li>
+    <li>Action（动作）：视图层发出的消息（比如mouseClick）</li>
+    <li>Dispatcher（派发器）：用来接收Actions、执行回调函数</li>
+    <li>Store（数据层）：用来存放应用的状态，一旦发生变动，就提醒Views要更新页面</li>
+</ul>
+
+<img src="http://www.ruanyifeng.com/blogimg/asset/2016/bg2016011503.png"/>
+
+Flux 的最大特点，就是数据的"单向流动"。
+
+<ol>
+    <li>用户访问 View</li>
+    <li>View 发出用户的 Action</li>
+    <li>Dispatcher 收到 Action，要求 Store 进行相应的更新</li>
+    <li>Store 更新后，发出一个"change"事件</li>
+    <li>View 收到"change"事件后，更新页面</li>
+</ol>
+
+Redux 的适用场景：多交互、多数据源。
+
+Redux 的设计思想很简单：
+
+（1）Web 应用是一个状态机，视图与状态是一一对应的。
+
+（2）所有的状态，保存在一个对象里面。
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "jsdemo",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "Angela <xuyi.liao@hand-china.com>"
+  ],
+  "license": "ISC",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "lib",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "^1.6.9",
+    "vue": "^2.5.16",
+    "vue-router": "^3.0.1"
+  }
+}

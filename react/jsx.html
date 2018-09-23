@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>JSX</title>
+    <!--React 的核心库-->
+    <script src="https://cdn.bootcss.com/react/15.4.2/react.min.js"></script>
+    <!--提供与 DOM 相关的功能-->
+    <script src="https://cdn.bootcss.com/react/15.4.2/react-dom.min.js"></script>
+    <!--Babel 可以将 ES6 代码转为 ES5 代码，这样我们就能在目前不支持 ES6 浏览器上
+    执行 React 代码。Babel 内嵌了对 JSX 的支持。通过将 Babel 和 babel-sublime
+    包（package）一同使用可以让源码的语法渲染上升到一个全新的水平。-->
+    <script src="https://cdn.bootcss.com/babel-standalone/6.22.1/babel.min.js"></script>
+</head>
+<body>
+
+<h4>React 特点</h4>
+<ul>
+    <li>1.声明式设计 −React采用声明范式，可以轻松描述应用。</li>
+    <li>2.高效 −React通过对DOM的模拟，最大限度地减少与DOM的交互。</li>
+    <li>3.灵活 −React可以与已知的库或框架很好地配合。</li>
+    <li>4.JSX − JSX 是 JavaScript 语法的扩展。React 开发不一定使用 JSX ，但我们建议使用它。
+        如果我们需要使用 JSX，则 &lt;script&gt; 标签的 type 属性需要设置为 text/babel。</li>
+    <li>5.组件 − 通过 React 构建组件，使得代码更加容易得到复用，能够很好的应用在大项目的开发中。</li>
+    <li>6.单向响应的数据流 − React 实现了单向响应的数据流，从而减少了重复代码，
+        这也是它为什么比传统数据绑定更简单。</li>
+</ul>
+
+<div id="example"></div>
+<script type="text/babel">
+    var i = 1;
+    var myStyle = {
+        fontSize: 32,
+        color: '#FF0000'
+    };
+    var arr = [
+        <h4>JSX 允许在模板中插入数组，数组会自动展开所有成员</h4>,
+        <p>在标签内部的注释需要花括号,在标签外的的注释不能使用花括号</p>
+    ];
+    ReactDOM.render(
+            <div>
+                <h4>JSX 看起来类似 HTML</h4>
+                <p>嵌套多个 HTML 标签，需要使用一个 标签 元素包裹它</p>
+                <p data-myattribute = "somevalue">添加自定义属性需要使用 data- 前缀。</p>
+                <p>在 JSX 中可以使用 JavaScript 表达式。表达式写在花括号&#123;&#125;中。</p>
+                <p>在 JSX 中不能使用 if else 语句，但可以使用 conditional (三元运算) 表达式来替代。</p>
+                <p>{i == 1 ? 'True' : 'False'}</p>
+                <p style={myStyle}>React 推荐使用内联样式。通过 camelCase 语法来设置内联样式.
+                    React 会在指定元素数字后自动添加 px 。</p>
+                {/*注释需要写在花括号中...*/}
+                <p>{arr}</p>
+            </div>
+        ,
+        document.getElementById('example')
+    );
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>查询AngularJS版本信息</title>
+    <script src="../lib/angular/angular.min.js"></script>
+</head>
+<body ng-app="myApp" ng-controller="myCtrl">
+{{version}}
+<br>
+{{message}}
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myCtrl', function($scope, $rootScope) {
+        $scope.version = angular.version;
+        $scope.message = '原来的信息';
+        $scope.getMessage = function(){
+            setTimeout(function(){
+                //message刚开始不是监听对象，对它加上$scope.$apply后才可以监听
+                $scope.$apply(function () {
+                    $scope.message = '两秒后更新';
+                    alert('message'+$scope.message);
+                });
+            },2000)
+        }
+        $scope.getMessage();
+    });
+</script>
+</body>
+</html>

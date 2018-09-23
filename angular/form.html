@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>AngularJS 表单</title>
+		<script src="../lib/angular/angular.min.js"></script>
+
+	</head>
+
+	<body ng-app="myApp">
+		<div ng-controller="formCtrl">
+			<form novalidate>
+				First Name:<br>
+				<input type="text" ng-model="user.firstName"><br> Last Name:<br>
+				<input type="text" ng-model="user.lastName">
+				<br>
+				<select ng-init="selectedName = names[0]" ng-model="selectedName" ng-options="x for x in names">
+				</select>
+				<br>
+				<button ng-click="reset()">RESET</button>
+			</form>
+			<p>form = {{ user}}</p>
+			<p>master = {{ master}}</p>
+		</div>
+
+		<form ng-controller="validateCtrl" name="myForm" novalidate>
+
+			<p>用户名:<br>
+				<input type="text" name="user" ng-model="user" required>
+				<span style="color:red" ng-show="myForm.user.$dirty && myForm.user.$invalid">
+  					<span ng-show="myForm.user.$error.required">用户名是必须的。</span>
+				</span>
+			</p>
+
+			<p>邮箱:<br>
+				<input type="email" name="email" ng-model="email" required>
+				<span style="color:red" ng-show="myForm.email.$dirty && myForm.email.$invalid">
+  					<span ng-show="myForm.email.$error.required">邮箱是必须的。</span>
+				<span ng-show="myForm.email.$error.email">非法的邮箱。</span>
+				</span>
+			</p>
+
+			<p>
+				<input type="submit" ng-disabled="myForm.user.$dirty && myForm.user.$invalid ||
+  myForm.email.$dirty && myForm.email.$invalid">
+			</p>
+
+		</form>
+
+		<script>
+			var app = angular.module('myApp', []);
+			app.controller('formCtrl', function($scope) {
+				$scope.master = {
+					firstName: "John",
+					lastName: "Doe"
+				};
+				$scope.reset = function() {
+					$scope.user = angular.copy($scope.master);
+				};
+				$scope.reset();
+				$scope.names = ["Google", "Runoob", "Taobao"];
+			});
+			app.controller('validateCtrl', function($scope) {
+				$scope.user = 'John Doe';
+				$scope.email = 'john.doe@gmail.com';
+			});
+		</script>
+	</body>
+
+</html>

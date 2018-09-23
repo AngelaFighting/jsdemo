@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>AngularJS 指令</title>
+		<script src="../lib/angular/angular.min.js"></script>
+		 <style>
+			input.ng-invalid {
+			    background-color: lightblue;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div>
+			<pre>
+AngularJS 指令是扩展的 HTML 属性，带有前缀 <b>ng-</b>。
+
+<b>ng-app</b> 指令初始化一个 AngularJS 应用程序。
+
+<b>ng-init</b> 指令初始化应用程序数据。
+
+<b>ng-model</b> 指令把元素值（比如输入域的值）绑定到应用程序。
+<!--双向绑定，在修改输入域的值时， AngularJS 属性的值也将修改。-->
+			</pre>
+		</div>
+
+		<div ng-app="myApp" ng-init="firstName='John';names=['Jani','Hege','Kai']">
+			<p>在输入框中尝试输入：</p>
+			<p>姓名：<input type="text" ng-model="firstName"></p>
+			<p>你输入的为： {{ firstName }}</p>
+			<div ng-controller="myCtrl">
+			 	名字: <input ng-model="name">
+			</div>
+			<p>使用 ng-repeat 来循环数组</p>
+			<ul>
+				<li ng-repeat="x in names">
+					{{ x }}
+				</li>
+			</ul>
+			<runoob-directive></runoob-directive>
+			<form name="myForm">
+			    Email:
+			    <input type="email" name="myAddress" ng-model="text" required=""> 
+			    <span ng-show="myForm.myAddress.$error.email">不是一个合法的邮箱地址</span>
+					<!--提示信息会在 ng-show 属性返回 true 的情况下显示。-->
+					<p>ng-model 指令可以为应用数据提供状态值(invalid, dirty, touched, error)</p>
+					<h1>状态</h1>
+			    {{myForm.myAddress.$valid}}
+			    {{myForm.myAddress.$dirty}}
+			    {{myForm.myAddress.$touched}}
+			</form>
+			<!--使用 AngularJS, 你可以使用 ng-include 指令来包含 HTML 内容:
+			<div ng-include="'runoob.htm'"></div>-->
+		</div>
+		<div>
+			<pre>
+除了 AngularJS 内置的指令外，我们还可以创建自定义指令。
+
+你可以使用 <b>.directive</b> 函数来添加自定义的指令。
+
+要调用自定义指令，HTML 元素上需要添加自定义指令名。
+
+使用驼峰法来命名一个指令， runoobDirective, 但在使用它时需要以 - 分割, runoob-directive:
+
+restrict 值可以是以下几种:
+
+    E 作为元素名使用
+    A 作为属性使用
+    C 作为类名使用
+    M 作为注释使用
+
+restrict 默认值为 EA, 即可以通过元素名和属性名来调用指令。
+			</pre>
+			<pre>
+ng-model 指令根据表单域的状态添加/移除以下类：
+
+    ng-empty
+    ng-not-empty
+    ng-touched
+    ng-untouched
+    ng-valid
+    ng-invalid
+    ng-dirty
+    ng-pending
+    ng-pristine
+
+			</pre>
+			<pre>
+AngularJS 添加/移除 class 的指令:
+
+    ng-show
+    ng-hide
+    ng-class
+    ng-view
+    ng-include
+    ng-repeat
+    ng-if
+    ng-switch
+
+			</pre>
+		</div>
+		<script>
+			var app = angular.module("myApp", []);
+			app.directive("runoobDirective", function() {
+				return {
+					restrict: "E",
+					template: "<h1>自定义指令!</h1>"
+				};
+			});
+			app.controller('myCtrl', function($scope) {
+			    $scope.name = "John Doe";
+			});
+		</script>
+	</body>
+
+</html>

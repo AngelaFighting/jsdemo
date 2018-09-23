@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue 组件</title>
+    <script src="../lib/vue/dist/vue.min.js"></script>
+</head>
+<body>
+<pre>
+注册一个全局组件语法格式如下：
+Vue.component(tagName, options)
+tagName 为组件名，options 为配置选项。注册后，我们可以使用以下方式来调用组件：
+&lt;tagName&gt;&lt;/tagName&gt;
+</pre>
+
+<div id="app">
+    <p>所有实例都能用全局组件。</p>
+    <p>注册一个简单的全局组件 runoob，并使用它：</p>
+    <runoob></runoob>
+    <p>我们也可以在实例选项中注册局部组件，这样组件只能在这个实例中使用：</p>
+    <p>注册一个简单的局部组件 runoob，并使用它：</p>
+    <runoob2></runoob2>
+    <h4>prop 是父组件用来传递数据的一个自定义属性。</h4>
+    <p>在 Vue 中，父子组件的关系可以总结为 prop 向下传递，事件向上传递。
+        父组件通过 prop 给子组件下发数据，子组件通过事件给父组件发送消息。</p>
+    <p>父组件的数据需要通过 props 把数据传给子组件，子组件需要显式地用 props 选项声明 "prop"：</p>
+    <child message="hello!"></child>
+    <p>HTML 特性是不区分大小写的。所以，当使用的不是字符串模板时，
+        camelCase (驼峰式命名) 的 prop 需要转换为相对应的 kebab-case (短横线分隔式命名)：</p>
+    <!-- 在 HTML 中使用 kebab-case -->
+    <child2 my-message="hello!"></child2>
+    <p>如果你使用字符串模板，则没有这些限制。</p>
+    <h4>动态 Prop</h4>
+    <p>类似于用 v-bind 绑定 HTML 特性到一个表达式，
+        也可以用 v-bind 动态绑定 props 的值到父组件的数据中。
+        每当父组件的数据变化时，该变化也会传导给子组件：</p>
+    <div>
+        <input v-model="parentMsg">
+        <br>
+        <child v-bind:message="parentMsg"></child>
+    </div>
+    <ol>
+        <todo-item v-for="item in sites" v-bind:todo="item"></todo-item>
+    </ol>
+</div>
+<h4>自定义事件</h4>
+<pre>
+父组件是使用 props 传递数据给子组件，但如果子组件要把数据传递回去，就需要使用自定义事件！
+我们可以使用 v-on 绑定自定义事件, 每个 Vue 实例都实现了事件接口(Events interface)，即：
+1、使用 $on(eventName) 监听事件
+2、使用 $emit(eventName) 触发事件
+另外，父组件可以在使用子组件的地方直接用 v-on 来监听子组件触发的事件。
+注意：不能用 $on 侦听子组件释放的事件，而必须在模板里直接用 v-on 绑定。
+    </pre>
+<p>以下实例中子组件已经和它外部完全解耦了。它所做的只是触发一个父组件关心的内部事件。</p>
+<div id="counter-event-example">
+    <p>{{ total }}</p>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+    <button-counter v-on:increment="incrementTotal"></button-counter>
+</div>
+<p>如果你想在某个组件的根元素上监听一个原生事件。可以使用 .native 修饰 v-on 。例如：</p>
+<!--<my-component v-on:click.native="doTheThing"></my-component>-->
+<script>
+    //注意确保在初始化根实例之前注册组件
+    // 注册
+    Vue.component('runoob', {
+        template: '<h4>自定义全局组件!</h4>'
+    })
+    var Child = {
+        template: '<h4>自定义局部组件!</h4>'
+    }
+    // 注册
+    Vue.component('child', {
+        // 声明 props
+        props: ['message'],
+        // 同样也可以在 vm 实例中像 "this.message" 这样使用
+        template: '<span>{{ message }}</span>'
+    })
+    Vue.component('child2', {
+        // 在 JavaScript 中使用 camelCase
+        props: ['myMessage'],
+        template: '<span>{{ myMessage }}</span>'
+    })
+    Vue.component('todo-item', {
+        props: ['todo'],
+        template: '<li>{{ todo.text }}</li>'
+    })
+    /**
+     * Prop 验证
+     组件可以为 props 指定验证要求。
+     要指定验证规则，需要用对象的形式来定义 prop，而不能用字符串数组：：
+     */
+    Vue.component('example', {
+        props: {
+            // 基础类型检测 （`null` 意思是任何类型都可以）
+            propA: Number,
+            // 多种类型
+            propB: [String, Number],
+            // 必传且是字符串
+            propC: {
+                type: String,
+                required: true
+            },
+            // 数字，有默认值
+            propD: {
+                type: Number,
+                default: 100
+            },
+            //注意 prop 会在组件实例创建之前进行校验，所以在 default 或 validator 函数里，
+            // 诸如 data、computed 或 methods 等实例属性还无法使用。
+
+            // 数组／对象的默认值应当由一个工厂函数返回
+            propE: {
+                type: Object,
+                default: function () {
+                    return {message: 'hello'}
+                }
+            },
+            // 自定义验证函数
+            propF: {
+                validator: function (value) {
+                    return value > 10
+                }
+            }
+        }
+    })
+    Vue.component('button-counter', {
+        template: '<button v-on:click="incrementHandler">{{ counter }}</button>',
+        // data 必须是函数
+        data: function () {
+            return {
+                counter: 0
+            }
+        },
+        /**
+         * Prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是反过来不会。
+         * 这是为了防止子组件无意间修改了父组件的状态，来避免应用的数据流变得难以理解。
+         * 另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。
+         * 这意味着你不应该在子组件内部改变 prop。如果你这么做了，Vue 会在控制台给出警告。
+         * 在两种情况下，我们很容易忍不住想去修改 prop 中数据：
+         1、Prop 作为初始值传入后，子组件想把它当作局部数据来用；
+         2、Prop 作为原始数据传入，由子组件处理成其它数据输出。
+         对这两种情况，正确的应对方式是：
+         1、定义一个局部变量，并用 prop 的值初始化它：
+         2、定义一个计算属性，处理 prop 的值并返回：
+         */
+        methods: {
+            incrementHandler: function () {
+                this.counter += 1
+                this.$emit('increment')
+            }
+        },
+    })
+    new Vue({
+        el: '#counter-event-example',
+        data: {
+            total: 0
+        },
+        methods: {
+            incrementTotal: function () {
+                this.total += 1
+            }
+        }
+    })
+    // 创建根实例
+    new Vue({
+        el: '#app',
+        data: {
+            parentMsg: '父组件内容',
+            sites: [
+                {text: 'Runoob'},
+                {text: 'Google'},
+                {text: 'Taobao'}
+            ]
+        },
+        components: {
+            // <runoob2> 将只在父模板可用
+            'runoob2': Child
+        }
+    })
+</script>
+
+</body>
+</html>
